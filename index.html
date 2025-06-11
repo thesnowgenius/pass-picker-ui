@@ -6,75 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Snow Genius Pass Picker</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 2rem;
-      background: #f4f4f4;
-    }
-    h1 {
-      color: #2a2a2a;
-    }
-    form {
-      background: #fff;
-      padding: 1rem;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      max-width: 400px;
-    }
-    label {
-      display: block;
-      margin-top: 1rem;
-    }
-    input[type="text"], input[type="number"] {
-      width: 100%;
-      padding: 0.5rem;
-      margin-top: 0.25rem;
-      box-sizing: border-box;
-    }
-    button {
-      margin-top: 1rem;
-      padding: 0.75rem 1.5rem;
-      background-color: #0057e7;
-      color: white;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-    }
-    #results {
-      margin-top: 2rem;
-    }
-    pre {
-      background: #eee;
-      padding: 1rem;
-      border-radius: 4px;
-      overflow-x: auto;
-    }
+    body { font-family: Arial, sans-serif; padding: 2rem; background: #f4f4f4; }
+    form { background: #fff; padding: 1rem; border-radius: 5px; max-width: 400px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    label { display: block; margin-top: 1rem; }
+    input[type="text"], input[type="number"] { width: 100%; padding: 0.5rem; box-sizing: border-box; }
+    button { margin-top: 1rem; padding: 0.75rem 1.5rem; background-color: #0057e7; color: white; border: none; border-radius: 3px; cursor: pointer; }
+    pre { background: #eee; padding: 1rem; border-radius: 4px; overflow-x: auto; }
   </style>
 </head>
 <body>
   <h1>Snow Genius: Pass Picker</h1>
   <form id="passForm">
-    <label>
-      Age:
-      <input type="number" id="age" value="39" required />
-    </label>
-    <label>
-      Home Address:
-      <input type="text" id="address" value="West Newton, MA" required />
-    </label>
-    <label>
-      Number of Ski Days:
-      <input type="number" id="total_days" value="10" required />
-    </label>
-    <label>
-      Ski on Weekends:
-      <input type="checkbox" id="wants_weekend" checked />
-    </label>
+    <label>Age: <input type="number" id="age" value="39" required /></label>
+    <label>Address: <input type="text" id="address" value="West Newton, MA" required /></label>
+    <label>Number of Ski Days: <input type="number" id="total_days" value="10" required /></label>
+    <label>Ski on Weekends: <input type="checkbox" id="wants_weekend" checked /></label>
     <button type="submit">Find My Pass</button>
   </form>
-
   <div id="results"></div>
-
   <script>
     async function getCoordinates(address) {
       const encoded = encodeURIComponent(address);
@@ -82,10 +31,7 @@
       const response = await fetch(url);
       const data = await response.json();
       if (data.length > 0) {
-        return {
-          lat: parseFloat(data[0].lat),
-          lon: parseFloat(data[0].lon)
-        };
+        return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
       } else {
         throw new Error("Location not found");
       }
@@ -100,27 +46,22 @@
 
       try {
         const coords = await getCoordinates(address);
-
         const response = await fetch("https://pass-picker.onrender.com/score_pass", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             age: age,
-            home_zip: "generated-from-coords", // placeholder if needed
             total_days: total_days,
             wants_weekend: wants_weekend,
             latitude: coords.lat,
             longitude: coords.lon
           })
         });
-
         const results = await response.json();
         document.getElementById("results").innerHTML =
           "<h2>Top Passes:</h2><pre>" + JSON.stringify(results, null, 2) + "</pre>";
       } catch (err) {
-        document.getElementById("results").innerHTML = "<p>Error finding location: " + err.message + "</p>";
+        document.getElementById("results").innerHTML = "<p>Error: " + err.message + "</p>";
       }
     });
   </script>
