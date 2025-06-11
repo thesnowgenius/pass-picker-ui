@@ -45,7 +45,7 @@
         ski_weekends: formData.get("ski_weekends") !== null
       };
 
-      const response = await fetch("https://pass-picker.onrender.com", {
+      const response = await fetch("https://pass-picker.onrender.com/score_pass", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
