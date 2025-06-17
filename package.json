@@ -5,20 +5,23 @@
   "homepage": "https://thesnowgenius.github.io/pass-picker-ui",
   "dependencies": {
     "axios": "^1.4.0",
-    "gh-pages": "^6.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "5.0.1"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.0.0",
     "tailwindcss": "^3.4.1",
     "postcss": "^8.4.24",
     "autoprefixer": "^10.4.14"
   },
-  "scripts": {	•	“predeploy”: “npm run build:css && npm run build”,
-	•	“build:css”: “tailwindcss -i ./src/index.css -o ./src/index.css –minify”,
-
-	•	“predeploy”: “npm run build:css && npm run build”,
-	•	“build:css”: “tailwindcss -i ./src/index.css -o ./src/index.css –minify”,
-“build”: “react-scripts build”,
-// …
-}
+  "scripts": {
+    "start": "react-scripts start",
+    "build:css": "tailwindcss -i src/index.css -o src/index.css --minify",
+    "build": "npm run build:css && react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  }
 }
